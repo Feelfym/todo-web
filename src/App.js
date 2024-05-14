@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
-import Task from "./component/Task";
+import TaskForm from "./component/TaskForm";
+import TaskTable from "./component/TaskTable";
+
 import {
+  Box,
   Flex,
   Center,
-  Box,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
   CheckboxGroup,
   Text,
   Input,
@@ -14,7 +21,8 @@ import axios from "axios";
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [name, setName] = useState("");
-  const [showCompleted, setShowCompleted] = useState(false);
+  const [dueDate, setDueDate] = useState("");
+  const [showCompleted, setShowCompleted] = useState(true);
 
   const fetch = async () => {
     const res = await axios.get("http://localhost:3010/tasks");
@@ -25,8 +33,10 @@ const App = () => {
     await axios.post("http://localhost:3010/tasks", {
       name: name,
       is_done: false,
+      due_date: dueDate
     });
     setName("");
+    setDueDate("");
     fetch();
   };
 
@@ -57,36 +67,19 @@ const App = () => {
                 タスク一覧
               </Text>
             </Box>
-            <Flex mb="24px">
-              <Input
-                placeholder="タスク名を入力"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <Box ml="16px">
-                <Button colorScheme="teal" onClick={createTask}>
-                  タスクを作成
-                </Button>
-              </Box>
-            </Flex>
-            <CheckboxGroup>
-              {tasks.map((task, index) => {
-                if (!showCompleted && task.is_done) {
-                  return null;
-                }
-                return (
-                  <Task
-                    id={task.id}
-                    key={index}
-                    index={index}
-                    name={task.name}
-                    isDone={task.is_done}
-                    toggleIsDone={toggleIsDone}
-                    destroyTask={destroyTask}
-                  />
-                );
-              })}
-            </CheckboxGroup>
+            <TaskForm
+              name={name}
+              setName={setName}
+              dueDate={dueDate}
+              setDueDate={setDueDate}
+              createTask={createTask}
+            />
+            <TaskTable
+              tasks={tasks}
+              showCompleted={showCompleted}
+              toggleIsDone={toggleIsDone}
+              destroyTask={destroyTask}
+            />
             <Box mt="24px">
               <Button
                 colorScheme="teal"
