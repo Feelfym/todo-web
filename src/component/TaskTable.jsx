@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Table, Thead, Tbody, Tr, Th, CheckboxGroup } from "@chakra-ui/react";
+import { Flex, Table, Thead, Tbody, Tr, Th, CheckboxGroup } from "@chakra-ui/react";
 import Task from "./Task";
 
 const TaskTable = ({ tasks, showCompleted, toggleIsDone, destroyTask }) => {
@@ -7,11 +7,11 @@ const TaskTable = ({ tasks, showCompleted, toggleIsDone, destroyTask }) => {
     <Table variant="simple">
       <Thead>
         <Tr>
-          <Th>完了チェック</Th>
-          <Th>タスク名</Th>
-          <Th>追加日</Th>
-          <Th>期日</Th>
-          <Th>操作</Th>
+          <Th width="9%"><Flex justifyContent="center">完了</Flex></Th>
+          <Th width="50%">タイトル</Th>
+          <Th width="10%">追加日</Th>
+          <Th width="10%"><></>期日</Th>
+          <Th width="7%"><Flex justifyContent="center">操作</Flex></Th>
         </Tr>
       </Thead>
       <Tbody>

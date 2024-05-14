@@ -5,14 +5,15 @@ const TaskForm = ({ name, setName, dueDate, setDueDate, createTask }) => {
   return (
     <Flex mb="24px">
       <Input
+        width="100%"
         placeholder="タスク名を入力"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
       <Input
+        width="30%"
         ml="16px"
         type="date"
-        placeholder="期日を入力"
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
       />
