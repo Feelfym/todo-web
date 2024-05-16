@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from "react";
 import TaskForm from "./component/TaskForm";
-import TaskTable from "./component/TaskTable";
+import TaskList from "./component/TaskList";
 import { Flex, Box, Center, Text, Button } from "@chakra-ui/react";
 import axios from "axios";
+import { fetchTasks, createTask, toggleTaskStatus } from "./api/taskApi";
+import { addOneDay } from "./utils/dateUtils";
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [name, setName] = useState("");
-  const addOneDay = (date) => {
-    const result = new Date(date);
-    result.setDate(result.getDate() + 1);
-    const year = result.getFullYear();
-    const month = String(result.getMonth() + 1).padStart(2, '0');
-    const day = String(result.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
   const [dueDate, setDueDate] = useState(addOneDay(new Date()));
   const [showCompleted, setShowCompleted] = useState(true);
   const [sortOrder, setSortOrder] = useState("asc");
 
   const fetch = async () => {
-    const res = await axios.get("http://localhost:3010/tasks");
-    sortTasks(res.data);
+    const tasks = await fetchTasks();
+    sortTasks(tasks);
   };
 
   const sortTasks = (tasks) => {
@@ -41,14 +35,9 @@ const App = () => {
     sortTasks(tasks);
   };
 
-  const createTask = async () => {
-    await axios.post("http://localhost:3010/tasks", {
-      name: name,
-      is_done: false,
-      due_date: dueDate
-    });
+  const createTaskHandler = async () => {
+    await createTask(name, dueDate);
     setName("");
-    setDueDate("");
     fetch();
   };
 
@@ -63,14 +52,12 @@ const App = () => {
 
   const toggleIsDone = async (id, index) => {
     const isDone = tasks[index].is_done;
-    await axios.put(`http://localhost:3010/tasks/${id}`, {
-      is_done: !isDone,
-    });
+    await toggleTaskStatus(id, isDone);
     fetch();
   }
 
   return (
-    <form onSubmit={createTask}>
+    <form onSubmit={createTaskHandler}>
       <Box mt="64px" width="100%">
         <Center>
           <Box width="60%">
@@ -84,29 +71,17 @@ const App = () => {
               setName={setName}
               dueDate={dueDate}
               setDueDate={setDueDate}
-              createTask={createTask}
+              createTask={createTaskHandler}
             />
-            <TaskTable
+            <TaskList
               tasks={tasks}
               showCompleted={showCompleted}
               toggleIsDone={toggleIsDone}
               destroyTask={destroyTask}
+              toggleSortOrder={toggleSortOrder}
+              sortOrder={sortOrder}
+              setShowCompleted={setShowCompleted}
             />
-            <Flex mt="24px" justifyContent="space-between">
-              <Button
-                colorScheme="teal"
-                onClick={() => setShowCompleted(!showCompleted)}
-              >
-                {showCompleted ? "完了タスクを非表示" : "完了タスクを表示"}
-              </Button>
-              <Button 
-                ml="16px" 
-                mr="60px"
-                colorScheme="teal"
-                onClick={toggleSortOrder}>
-                {sortOrder === "asc" ? "期日を降順に並び替え" : "期日を順に並び替え"}
-              </Button>
-            </Flex>
           </Box>
         </Center>
       </Box>
