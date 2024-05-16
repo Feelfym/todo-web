@@ -31,6 +31,7 @@ const TaskTable = ({ tasks, showCompleted, toggleIsDone, destroyTask }) => {
                 destroyTask={destroyTask}
                 createdAt={new Date(task.created_at).toLocaleDateString()}
                 dueDate={new Date(task.due_date).toLocaleDateString()}
+                memo={task.memo}
               />
             );
           })}
