@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import TaskForm from "./component/TaskForm";
-import TaskList from "./component/TaskList";
 import { Box, Center, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { fetchTasks, createTask, toggleTaskStatus } from "./api/taskApi";
+import TaskForm from "./component/TaskForm";
+import TaskList from "./component/TaskList";
 import { addOneDay } from "./utils/dateUtils";
 
 const App = () => {

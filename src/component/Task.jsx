@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Checkbox, Text, Flex, IconButton, useDisclosure } from "@chakra-ui/react";
 import { CloseIcon, InfoIcon, EditIcon } from "@chakra-ui/icons";
 import TaskDetailModal from "./TaskDetailModal";
