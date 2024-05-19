@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Input, Textarea } from "@chakra-ui/react";
-import axios from "axios";
 import { format } from 'date-fns';
+import { updateTask } from "../api/taskApi";
 
 const TaskEditModal = ({ isOpen, onClose, task }) => {
   const existingDueDate = format(task.dueDate, "yyyy-MM-dd");
@@ -18,11 +18,7 @@ const TaskEditModal = ({ isOpen, onClose, task }) => {
   }, [task]);
 
   const handleSave = async () => {
-    await axios.put(`http://localhost:3010/tasks/${task.id}`, {
-      name,
-      due_date: dueDate,
-      memo
-    });
+    await updateTask(task.id, { name, due_date: dueDate, memo });
     onClose();
   };
 

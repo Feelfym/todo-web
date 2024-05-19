@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Center, Text } from "@chakra-ui/react";
-import axios from "axios";
-import { fetchTasks, createTask, toggleTaskStatus } from "./api/taskApi";
+import { fetchTasks, createTask, toggleTaskStatus, destroyTask } from "./api/taskApi";
 import TaskForm from "./component/TaskForm";
 import TaskList from "./component/TaskList";
 import { addOneDay } from "./utils/dateUtils";
@@ -41,8 +40,8 @@ const App = () => {
     fetch();
   };
 
-  const destroyTask = async (id) => {
-    await axios.delete(`http://localhost:3010/tasks/${id}`);
+  const destroyTaskHandler = async (id) => {
+    await destroyTask(id);
     fetch();
   }
 
@@ -77,7 +76,7 @@ const App = () => {
               tasks={tasks}
               showCompleted={showCompleted}
               toggleIsDone={toggleIsDone}
-              destroyTask={destroyTask}
+              destroyTask={destroyTaskHandler}
               toggleSortOrder={toggleSortOrder}
               sortOrder={sortOrder}
               setShowCompleted={setShowCompleted}
