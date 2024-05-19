@@ -3,6 +3,7 @@ import { Flex, Table, Thead, Tbody, Tr, Th, CheckboxGroup } from "@chakra-ui/rea
 import Task from "./Task";
 
 const TaskTable = ({ tasks, showCompleted, toggleIsDone, destroyTask }) => {
+  
   return (
     <Table variant="simple">
       <Thead>

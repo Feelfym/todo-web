@@ -1,13 +1,17 @@
+import React, { useRef } from "react";
 import { Checkbox, Text, Flex, IconButton, useDisclosure } from "@chakra-ui/react";
-import { CloseIcon, InfoIcon } from "@chakra-ui/icons";
+import { CloseIcon, InfoIcon, EditIcon } from "@chakra-ui/icons";
 import TaskDetailModal from "./TaskDetailModal";
+import TaskEditModal from "./TaskEditModal";
 
 const Task = (props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const detailDisclosure = useDisclosure();
+  const editDisclosure = useDisclosure();
+
   return (
     <tr>
       <td>
-          <Flex justifyContent="center" alignItems="center">
+        <Flex justifyContent="center" alignItems="center">
           <Checkbox
             isChecked={props.isDone}
             colorScheme="blue"
@@ -21,9 +25,23 @@ const Task = (props) => {
       <td>
         <Text as={props.isDone ? "s" : "span"} color={new Date(props.dueDate) < new Date() ? "red" : "black"}>
           {props.name}
-          <IconButton icon={<InfoIcon />} size="sm" onClick={onOpen} aria-label="Show details" ml="2" />
+          <IconButton
+            icon={<InfoIcon />}
+            size="sm"
+            onClick={detailDisclosure.onOpen}
+            aria-label="Show details"
+            ml="4"
+          />
+          <IconButton
+            icon={<EditIcon />}
+            size="sm"
+            onClick={editDisclosure.onOpen}
+            aria-label="Edit task"
+            ml="4"
+          />
         </Text>
-        <TaskDetailModal isOpen={isOpen} onClose={onClose} task={props} />
+        <TaskDetailModal isOpen={detailDisclosure.isOpen} onClose={detailDisclosure.onClose} task={props} />
+        <TaskEditModal isOpen={editDisclosure.isOpen} onClose={editDisclosure.onClose} task={props} />
       </td>
       <td>
         <Text color="gray">{props.createdAt}</Text>
